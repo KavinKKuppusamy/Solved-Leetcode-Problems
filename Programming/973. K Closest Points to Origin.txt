@@ -1,0 +1,42 @@
+973. K Closest Points to Origin
+
+Naive Approach:
+Find the list of all the distance from a point to origin.
+Sort the list and take first k element
+
+Using Heapq
+
+class Solution:
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        import heapq
+        queue = []
+        for point in points:
+            queue.append(((point[0]**2  + point[1]**2),point))   
+        heapq.heapify(queue)
+        ret_list = []
+        print(queue)
+        for _ in range(k):
+            ret_list.append(heapq.heappop(queue)[1])
+        return ret_list
+            
+
+Another Optimization:
+
+import heapq
+
+class Solution:
+    def kClosest(self, points: List[List[int]], K: int) -> List[List[int]]:
+        
+        heap = []
+        
+        for (x, y) in points:
+            dist = -(x*x + y*y)
+            if len(heap) == K:
+                heapq.heappushpop(heap, (dist, x, y))
+            else:
+                heapq.heappush(heap, (dist, x, y))
+        
+        return [(x,y) for (dist,x, y) in heap]
+
+
+

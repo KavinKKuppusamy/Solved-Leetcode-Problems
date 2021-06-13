@@ -1,0 +1,50 @@
+145. Binary Tree Postorder Traversal
+
+
+
+
+Recursive Solution
+------------------
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def postorderTraversal(self, root):
+        res = []
+        def dfs_postorder(root):
+            if root is None:
+                return
+            
+            dfs_postorder(root.left)
+            dfs_postorder(root.right)
+            res.append(root.val)
+        dfs_postorder(root)
+        return res
+        
+Iterative Solution:
+------------------------
+
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def postorderTraversal(self, root):
+        if root is None:
+            return 
+        node_stack = [root]
+        values = []
+        while node_stack:
+            curr_node = node_stack.pop()    
+            values.append(curr_node.val)
+            if curr_node.left != None:
+                node_stack.append(curr_node.left)
+            if curr_node.right != None:
+                node_stack.append(curr_node.right)
+        return values[::-1]

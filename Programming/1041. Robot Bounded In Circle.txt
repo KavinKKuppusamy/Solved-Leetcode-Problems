@@ -1,0 +1,60 @@
+1041. Robot Bounded In Circle
+
+How to rotate vector to 90 degree -> negate the x, swap x and y
+https://limnu.com/sketch-easy-90-degree-rotate-vectors/#:~:text=Normally%20rotating%20vectors%20involves%20matrix,swap%20X%20and%20Y%20values.
+
+https://leetcode.com/problems/robot-bounded-in-circle/discuss/290856/JavaC%2B%2BPython-Let-Chopper-Help-Explain
+
+https://leetcode.com/problems/robot-bounded-in-circle/discuss/850634/Python-Simple-Fastest-Solution-Explained-(video-%2B-code)
+
+https://www.geeksforgeeks.org/check-if-a-given-sequence-of-moves-for-a-robot-is-circular-or-not/
+
+Idea:
+
+Starting at the origin and face north (0,1),
+after one sequence of instructions,
+
+if chopper return to the origin, he is obvious in an circle.
+if chopper finishes with face not towards north,
+it will get back to the initial status in another one or three sequences.
+
+**
+
+Another tip on how to change the directions. You actually do not need to keep a list of all possible directions [(0,1), (-1,0), (0,-1), (1,0)]. Just swap dx and dy and add a negative sign to one of it to rotate the direction by 90 degrees. The proof is that the dot product of (dx,dy) and (dy,-dx) is 0, meaning that these two vectors are perpendicular to each other.
+
+
+class Solution:
+    def isRobotBounded(self, instructions: str) -> bool:
+        dir = [0,1]
+        x,y = 0,0
+        
+        for i in instructions:
+            if i == 'G':
+                x,y = x+dir[0],y+dir[1]
+            elif i == 'L':
+                dir = [-dir[1],dir[0]]
+            else:
+                dir = [dir[1],-dir[0]]
+        
+        return (x == 0 and y == 0) or dir != [0,1]
+
+
+or 
+
+def isRobotBounded(self, instructions: str) -> bool:
+    # repeat 4 times and see if it returns to the beginning?
+    fullinstructions = instructions*4
+    dirs = [[0,1], [-1,0], [0,-1], [1,0]]
+    d = 0
+    r, c = 0, 0
+    for inst in fullinstructions:
+        if inst == "G":
+            r, c = r+dirs[d][0], c+dirs[d][1]
+        elif inst == "L":
+            d = (d+1)%4
+        else:
+            d = (d+3)%4
+    return r==0 and c==0 
+
+        
+        

@@ -1,0 +1,35 @@
+1514. Path with Maximum Probability
+
+https://leetcode.com/problems/path-with-maximum-probability/discuss/731659/Python-Djikstra-With-Explanation
+
+https://leetcode.com/problems/path-with-maximum-probability/discuss/736520/Python3-without-logarithms
+
+https://www.youtube.com/watch?v=XN-uJSGtLXE&ab_channel=HappyCoding
+
+https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+
+
+Solution: Using Djistra's Algorithm:
+------------------------------------
+
+class Solution:
+    def maxProbability(self, n: int, edges: List[List[int]], succProb: List[float], start: int, end: int) -> float:
+        graph = defaultdict(list)
+        for i,e in enumerate(edges):
+            graph[e[0]].append((e[1],succProb[i]))
+            graph[e[1]].append((e[0],succProb[i]))
+        p_queue = [(-1,start)]
+        visited= []
+        vertex_prob = {ver:0 for ver in range(n)}
+        
+        while p_queue:
+            curr_prob,curr_node = heapq.heappop(p_queue)
+            visited.append(curr_node)
+            for node,next_prob in graph[curr_node]:
+                prod_prob = curr_prob * next_prob
+                if prod_prob < vertex_prob[node]:
+                    vertex_prob[node] = prod_prob                   
+                    heapq.heappush(p_queue,(prod_prob,node))
+                
+        return -1*vertex_prob[end]
+        

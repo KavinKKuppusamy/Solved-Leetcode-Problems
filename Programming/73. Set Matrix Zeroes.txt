@@ -1,0 +1,77 @@
+73. Set Matrix Zeroes
+
+
+
+https://leetcode.com/problems/set-matrix-zeroes/discuss/26115/JavaPython-O(1)-space-11-lines-solution
+
+https://leetcode.com/problems/set-matrix-zeroes/discuss/657430/Python-Solution-w-approach-explanation-and-readable-with-space-progression-from%3A-O(m%2Bn)-and-O(1)
+
+
+Solution 1 : using addiditional space
+======================================
+
+For each 0 in the matrix the corresponding row and column needs to be set 0.
+Iterate over the matrix and mark the row and column wherever a 0 is encountered.
+Iterate over the matrix again and set the element whose row or column is marked
+Remarks:
+O(2*m*n) time complexity for traversing the matrix twice.
+O(m+n) space complexity for using sets of size m and n
+By using sets we can avoid checking for duplicate row and column insertions and also get constant lookup time. Using lists for the same thing will blow up the time complexity
+
+class Solution(object):
+    def setZeroes(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        """
+        row = set()
+        col = set()
+        for i in range(0, len(matrix)):
+            for j in range(0, len(matrix[0])):
+                if matrix[i][j] == 0:
+                    row.add(i)
+                    col.add(j)
+        for i in range(0, len(matrix)):
+            for j in range(0, len(matrix[0])):
+                if i in row or j in col:
+                    matrix[i][j] = 0
+
+Solution2:in constant space
+==============================
+
+
+The first cell of row and column for the first row and first column is the same i.e. cell[0][0]. Hence, we use an additional variable to tell us if the first column had been marked or not and the cell[0][0] would be used to tell the same for the first row.
+
+We then check if cell[0][0] == 0, if this is the case, we mark the first row as zero.
+
+And finally, we check if the first column was marked, we make all entries in it as zeros.
+
+
+class Solution:
+    def setZeroes(self, matrix: List[List[int]]) -> None:
+        r = len(matrix)
+        c = len(matrix[0])
+
+        first_col_zero = False
+        for i in range(r):
+            if matrix[i][0] == 0:
+                first_col_zero = True
+            for j in range(1,c):
+                if matrix[i][j] == 0:
+                    matrix[i][0] = 0
+                    matrix[0][j] = 0
+                    
+        for i in range(1,r):
+            for j in range(1,c):
+                if matrix[i][0] == 0 or matrix[0][j] == 0:
+                    matrix[i][j] = 0 
+        if matrix[0][0] == 0:
+            for j in range(c):
+                matrix[0][j] = 0 
+        
+        if first_col_zero:
+            for i in range(r):
+                matrix[i][0] = 0
+                
+        
+        

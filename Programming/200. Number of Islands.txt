@@ -1,0 +1,53 @@
+200. Number of Islands
+
+https://www.youtube.com/watch?v=__98uL6wst8&ab_channel=TECHDOSE
+
+https://leetcode.com/problems/number-of-islands/discuss/345981/Python3Number-of-Islands-BFS-%2B-DFS
+
+https://leetcode.com/problems/number-of-islands/discuss/863366/Python-3-or-DFS-BFS-Union-Find-All-3-methods-or-Explanation
+
+https://leetcode.com/problems/number-of-islands/discuss/56349/7-lines-Python-~14-lines-Java
+
+Solution: Using DFS
+===================
+
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        
+        r = len(grid)
+        c = len(grid[0])
+        num_of_island = 0 
+        for i in range(r):
+            for j in range(c):
+                if grid[i][j] == '1':
+                    num_of_island += 1
+                    self.run_bfs(grid,i,j,r,c)
+        return num_of_island
+    
+    def run_bfs(self,grid,curr_i,curr_j,r,c):
+        if curr_i > r-1 or curr_j > c-1 or curr_i < 0 or curr_j < 0 or grid[curr_i][curr_j] != '1':
+            return
+        
+        grid[curr_i][curr_j] = -1
+        
+        self.run_bfs(grid,curr_i-1,curr_j,r,c) # Up
+        self.run_bfs(grid,curr_i+1,curr_j,r,c) # Down
+        self.run_bfs(grid,curr_i,curr_j-1,r,c) # Left
+        self.run_bfs(grid,curr_i,curr_j+1,r,c) # Right
+
+Using BFS:
+=========
+
+cnt = 0
+for row in range(m):
+    for col in range(n):
+        if grid[row][col] == "0": continue  # notice it's "0" not 0……
+        grid[row][col] = "0"
+        queue = collections.deque([ (row,col) ])
+        while queue:
+            i,j = queue.popleft()  
+            for x,y in (i-1,j), (i+1,j), (i,j-1), (i,j+1):
+                if 0<=x<m and 0<=y<n and grid[x][y]=="1":
+                    grid[x][y] = "0"
+                    queue.append((x,y))
+        cnt += 1

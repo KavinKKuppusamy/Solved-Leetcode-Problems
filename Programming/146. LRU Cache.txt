@@ -1,0 +1,142 @@
+146. LRU Cache
+
+
+Solution: Using Doubly LinkedList and Hash
+
+class DLLNode:
+    def __init__(self,key,val,prev = None, next = None):
+        self.key = key
+        self.val = val
+        self.prev = prev
+        self.next = next
+        
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        self.capacity = capacity
+        self.lru_head = None
+        self.lru_head = None
+        self.cache_pointer = {}
+        self.filled_flag= False
+    
+    def move_to_front(self,get_node):
+        
+        # if requested node is a head Node
+        if get_node is self.lru_head:
+            return get_node.val
+            # if requested node is a tail node
+        if get_node is self.lru_tail:
+            self.lru_tail = get_node.prev
+            self.lru_tail.next = None               
+        else:
+            prev_node = get_node.prev
+            next_node =  get_node.next
+            prev_node.next = next_node
+            next_node.prev = prev_node
+                
+        get_node.next = self.lru_head
+        self.lru_head.prev = get_node
+        self.lru_head = get_node
+        self.lru_head.prev = None
+        return self.lru_head.val
+        
+    def get(self, key: int) -> int:
+        if key in self.cache_pointer:
+            get_node = self.cache_pointer[key]
+            return self.move_to_front(get_node)
+        else:
+            return -1
+        
+
+    def put(self, key: int, value: int) -> None:
+        
+        if  key in self.cache_pointer:
+            get_node = self.cache_pointer[key]
+            self.move_to_front(get_node)
+            get_node.val = value
+            return
+            
+            
+        if len(self.cache_pointer.keys()) == self.capacity:
+            self.filled_flag = True
+        make_node = DLLNode(key,value)
+        
+        
+        if self.lru_head is None:
+            self.lru_tail = make_node
+            self.lru_head = make_node  
+        else:
+            next_node = self.lru_head
+            self.lru_head.prev = make_node
+            self.lru_head = make_node
+            self.lru_head.next = next_node
+            
+            if self.filled_flag:
+                del self.cache_pointer[self.lru_tail.key]
+                prev_lru_node = self.lru_tail.prev
+                self.lru_tail = prev_lru_node
+                self.lru_tail.next = None 
+                self.filled_flag = False 
+        
+        self.cache_pointer[key] = make_node
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+
+
+Solution 2: Using OrderedDict
+-----------------------------
+
+class LRUCache:
+
+    def __init__(self, capacity: int):
+        
+        self.cache_dict = collections.OrderedDict()
+        self.capacity = capacity
+        
+    def get(self, key: int) -> int:
+        
+        if key in self.cache_dict:
+            ret_val = self.cache_dict.pop(key)
+            self.cache_dict[key] = ret_val
+            return ret_val
+        return -1
+        
+    
+    def put(self, key: int, value: int) -> None:
+        
+        
+        if key in self.cache_dict:
+            self.cache_dict.pop(key)
+        else:
+            if len(self.cache_dict) == self.capacity:
+                self.cache_dict.popitem(last=False)
+
+        self.cache_dict[key] = value
+
+
+# Your LRUCache object will be instantiated and called as such:
+# obj = LRUCache(capacity)
+# param_1 = obj.get(key)
+# obj.put(key,value)
+
+****************
+
+
+
+
+
+
+
+Other Fact about OD:
+
+https://www.geeksforgeeks.org/ordereddict-in-python/
+
+Ordered dict in Python version 2.7 consumes more memory than normal dict. This is due to the underlying Doubly Linked List implementation for keeping the order. In Python 2.7 Ordered Dict is not dict subclass, it’s a specialized container from 
+collections module.
+Starting from Python 3.7, insertion order of Python dictionaries is guaranteed.

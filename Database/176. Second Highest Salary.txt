@@ -1,0 +1,62 @@
+176. Second Highest Salary
+
+Idea:
+---------
+Use OFFSET which defines where to start the limiting.
+Use Another Select to manage the NULL Cases
+
+
+Solution Try: 
+---------------
+
+This was my first idea.
+
+SELECT DISTINCT Salary as SecondHighestSalary 
+FROM Employee
+ORDER BY Salary DESC 
+LIMIT 1 OFFSET 1;
+
+However, this solution will be judged as 'Wrong Answer' if there is no such second highest salary since there might be only one record in this table. To overcome this issue, we can take this as a temp table.
+
+
+Solution 1:
+-----------
+
+SELECT
+    (SELECT DISTINCT
+            Salary
+        FROM
+            Employee
+        ORDER BY Salary DESC
+        LIMIT 1 OFFSET 1) AS SecondHighestSalary
+;
+
+
+Solution 2: Use IFNULL:
+---------------------
+
+SELECT IFNULL(
+    (SELECT DISTINCT Salary   
+    FROM Employee
+    ORDER BY Salary DESC 
+    LIMIT 1 OFFSET 1) ,NULL) as SecondHighestSalary;
+
+
+Solution3 : Use Subquery, max(salary) < (select max(salary))
+--------------------------------------------------------------
+
+SELECT MAX(Salary) AS SecondHighestSalary
+FROM Employee
+WHERE Salary < (SELECT MAX(Salary) FROM Employee)
+
+
+Solution4 : Using Window Function and Temp Table
+--------------------------------------------------
+
+WITH Rank_salary_table AS (
+    SELECT Salary,  DENSE_RANK() OVER(ORDER BY Salary DESC) as Salary_Rank
+    FROM Employee)
+    
+SELECT IFNULL(max(Salary),NULL) SecondHighestSalary
+FROM Rank_salary_table
+WHERE Salary_Rank = 2;

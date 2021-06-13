@@ -1,0 +1,56 @@
+53. Maximum Subarray
+
+
+Solution:1
+===========
+
+class Solution:
+    def maxSubArray(self, nums: List[int]) -> int:
+        curr_sum = max_sum = nums[0]
+        for i in nums[1:]:
+            curr_sum = max(curr_sum + i,i)
+            max_sum = max(curr_sum,max_sum)
+        return max_sum
+
+Solution2:
+===========
+
+For each element, maintain max of element or element + previous sum in the table        
+
+class Solution:
+    def maxSubArray(self, nums):
+            dp = [0]*len(nums)
+            for i,num in enumerate(nums):            
+                dp[i] = max(dp[i-1] + num, num)
+            return max(dp)
+
+Solution3: Divide and Conquer
+=============================
+
+class Solution:
+    # @param {integer[]} nums
+    # @return {integer}
+     
+
+     def maxSubArrayHelper(self,nums, l, r):
+        if l > r:
+            return -2147483647
+        m = (l+r) / 2
+        
+        leftMax = sumNum = 0
+        for i in range(m - 1, l - 1, -1):
+            sumNum += nums[i]
+            leftMax = max(leftMax, sumNum)
+        
+        rightMax = sumNum = 0
+        for i in range(m + 1, r + 1):
+            sumNum += nums[i]
+            rightMax = max(rightMax, sumNum)
+            
+        leftAns = self.maxSubArrayHelper(nums, l, m - 1)
+        rightAns = self.maxSubArrayHelper(nums, m + 1, r)
+            
+        return max(leftMax + nums[m] + rightMax, max(leftAns, rightAns))
+        
+     def maxSubArray(self, nums):
+        return self.maxSubArrayHelper(nums, 0, len(nums) - 1)

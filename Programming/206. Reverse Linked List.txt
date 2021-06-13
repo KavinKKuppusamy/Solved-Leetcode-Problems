@@ -1,0 +1,82 @@
+206. Reverse Linked List
+
+Watch this - https://www.youtube.com/watch?v=KYH83T4q6Vs&ab_channel=mycodeschool
+
+Check my notes
+
+
+Iterative Method:
+-----------------
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def reverseList(self, head): 
+        if not head:
+            return
+        traverse_node = head
+        ## Find the last node
+        total_node = 0
+        while head.next != None:
+            total_node += 1
+            head = head.next
+        last_node = head
+        while total_node != 0:
+            
+            curr_node = traverse_node
+            traverse_node = traverse_node.next 
+            
+            if last_node.next == None:
+                curr_node.next = None
+            else:
+                curr_node.next = last_node.next
+            last_node.next = curr_node
+                
+            total_node -= 1
+        return last_node
+            
+
+Optimized method:
+------------------
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def reverseList(self, head):
+        cur_node = head
+        prev_node = None
+        next_node = None
+        
+        while cur_node != None:
+            next_node = cur_node.next
+            cur_node.next = prev_node
+            prev_node = cur_node
+            cur_node = next_node
+        
+        return prev_node
+
+Recursion:
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution(object):
+    def reverseList(self, head):
+        if head is None or head.next is None:
+            return  head        
+        last_node = self.reverseList(head.next)
+        ## Reversing the link
+        head.next.next = head
+        head.next = None
+        return last_node
+        
+
+

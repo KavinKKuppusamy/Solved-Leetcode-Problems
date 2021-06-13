@@ -1,0 +1,47 @@
+207. Course Schedule
+
+
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        from collections import defaultdict
+        graph_course = defaultdict(list)
+        exploring_course = []
+        visited_course = {}
+        for course,pre_req in prerequisites: 
+            graph_course[course].append(pre_req)
+            visited_course[course] = False
+            visited_course[pre_req] = False
+            
+            
+        def dfs(course):
+            if course in exploring_course:
+                return False
+            if visited_course[course]:
+                return True
+            exploring_course.append(course)
+            for course_prereq in graph_course[course]:
+                if not visited_course[course_prereq]:
+                    ret = dfs(course_prereq)
+                    if not ret:
+                        return False
+            exploring_course.remove(course)
+            visited_course[course] = True
+            return True
+            
+            
+        for course in visited_course.keys():
+            if not visited_course[course]:
+                if not dfs(course):
+                    return False
+        return True
+                
+        
+
+            
+            
+            
+            
+        
+            
+        
+        

@@ -1,0 +1,69 @@
+787. Cheapest Flights Within K Stops
+
+https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
+https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/362377/Dijkstra-Python-commented-and-explained
+https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/686939/Python-by-DP-with-Bellman-Ford-algorithm-w-Comment
+https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/687217/python-dfs-bfs-solution
+https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/738656/Python3-BFS-with-explanation-and-comments
+
+Solution: (Dijkstra)
+=========
+
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        
+        graph = collections.defaultdict(list)
+        for s,d,cost in flights:
+            graph[s].append([d,cost])
+            
+        pq = [(0,src,K+1)]
+        
+        while pq:
+            cost,curr_node,stops = heapq.heappop(pq)
+            if curr_node == dst:
+                return cost
+            if stops <= 0 :
+                continue
+            for adj_node,next_cost  in graph[curr_node]:
+                heapq.heappush(pq,(cost + next_cost,adj_node,stops-1))
+        return -1
+            
+ Solution -2: Bellman Ford:
+------------------------------
+
+
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
+        
+        price_table = [ float('inf') for _ in range(n) ]
+        
+        # price of source must be 0
+        price_table[ src ] = 0
+		
+        # initialization with 0 transfer
+        for source, destination, ticket_price in flights:
+            if source == src:
+                price_table[destination] = ticket_price
+        
+        print(price_table)
+        # tranfer k times to update price table
+        for trasfer in range(0, K):
+            
+            current_price = [*price_table]
+            
+            for source, destination, ticket_price in flights:
+                
+                current_price[destination] = min(current_price[destination], price_table[source] + ticket_price )
+            
+            # update current price back to price table    
+            price_table = current_price
+        
+        
+        if price_table[dst] == float('inf'):
+            return -1
+        else:
+            return price_table[dst]
+        
+
+    
+

@@ -1,0 +1,50 @@
+295. Find Median from Data Stream
+
+https://www.youtube.com/watch?v=fmL9iOwcDog&ab_channel=babybear4812
+
+https://leetcode.com/problems/find-median-from-data-stream/discuss/74047/JavaPython-two-heap-solution-O(log-n)-add-O(1)-find
+
+https://www.youtube.com/watch?v=1LkOrc-Le-Y&ab_channel=TECHDOSE
+
+https://leetcode.com/problems/find-median-from-data-stream/discuss/696658/Python-Logic-Explained-with-2-Heaps-Clean-code.
+
+https://leetcode.com/problems/find-median-from-data-stream/discuss/74062/Short-simple-JavaC%2B%2BPython-O(log-n)-%2B-O(1)
+
+https://leetcode.com/problems/find-median-from-data-stream/discuss/329206/Python-Binary-Search-Tree-Solution
+
+
+Solution:
+------------
+
+
+class MedianFinder:
+
+    def __init__(self):
+        self.min_heap = []
+        self.max_heap = []
+
+    def addNum(self, num: int) -> None:
+        # Add the element to max heap, then remove the max element (-1*min element) from max heap and add it to min heap
+        heappush(self.max_heap,-num)
+        max_ele = heappop(self.max_heap)
+        heappush(self.min_heap,-max_ele)
+        
+        #Check if there is any imbalance : len(min_heap) > len(max_heap)
+        if len(self.min_heap) > len(self.max_heap):
+            heapq.heappush(self.max_heap,-1*heapq.heappop(self.min_heap))
+        return
+
+    def findMedian(self) -> float:
+        if len(self.min_heap) == len(self.max_heap):
+            ret_val = (-1*self.max_heap[0] + self.min_heap[0])/2
+        else:
+            ret_val = -1*self.max_heap[0]
+        return ret_val
+        
+        
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()

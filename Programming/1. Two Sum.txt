@@ -1,0 +1,44 @@
+1. Two Sum
+
+Idea-1:
+---------
+Store number,and its index as key-pairs in dictionary and check if complement exists in the dict and it's not the same index.
+For redundant values in nums, it's just fine to store single number as we are gonna check for single complement.
+
+Solution:
+---------------
+
+class Solution(object):
+    def twoSum(self, nums, target):
+        nums_dict = {}
+        for index,value in enumerate(nums):
+            nums_dict[value]= index
+        for index in range(0,len(nums)):
+            complement = target - nums[index]
+            if complement in nums_dict and index != nums_dict[complement]:
+                return [index , nums_dict[complement]]
+
+
+--------------------------------------------------------------------
+
+Idea-2:
+
+It turns out we can do it in one-pass. While we iterate and inserting elements into the table, we also look back to check if current element's complement already exists in the table. If it exists, we have found a solution and return immediately.
+
+
+
+Solution:
+---------
+
+class Solution(object):
+    def twoSum(self, nums, target):
+        nums_dict = {}
+        for index in range(0,len(nums)):
+            complement = target - nums[index]
+            if complement in nums_dict:
+                return [index , nums_dict[complement]]
+            nums_dict[nums[index]] = index
+                                       
+                                        
+
+

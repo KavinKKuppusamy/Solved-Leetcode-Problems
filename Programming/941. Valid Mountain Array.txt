@@ -1,0 +1,52 @@
+941. Valid Mountain Array
+
+
+Approach 1: One Pass
+---------------------
+Intuition
+---------
+
+If we walk along the mountain from left to right, we have to move strictly up, then strictly down.
+
+Algorithm
+----------
+
+Let's walk up from left to right until we can't: that has to be the peak. We should ensure the peak is not the first or last element. Then, we walk down. If we reach the end, the array is valid, otherwise its not.
+
+
+Complexity Analysis
+----------------------
+
+Time Complexity: O(N), where N is the length of A.
+
+Space Complexity: O(1).
+
+
+Solution:
+--------
+class Solution(object):
+    def validMountainArray(self, arr):
+        
+        i = 0
+        n = len(arr)
+        
+        if n < 3:
+            return False
+        
+        ## Traversing first strictly increasing subarray till we find it decreasing
+        while i+1 < n and  arr[i] < arr[i+1]:
+            i+=1
+        
+        ## if i is still in first position or i reached the last position without seeing decrease from the peak, then break
+        if i == 0 or i == n-1:
+            return False
+        ## Traversing the next part of array which is strictly decreasing
+        while i+1 < n  and  arr[i] > arr[i+1]:
+            i+=1
+        
+        ## if we have reached the end of array 
+        return i == n-1
+        
+        
+
+

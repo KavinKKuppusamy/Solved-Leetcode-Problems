@@ -1,0 +1,42 @@
+80. Remove Duplicates from Sorted Array II
+-------------------------------------------
+
+Idea:
+-----
+To do everything inplace and we should do it in O(1) memory, we use counter for each countinuous value in array and while until  the counter(count of occurrence of a value) ie below 3, replace the j with ith value.
+
+
+Solution:
+
+class Solution(object):
+    def removeDuplicates(self, nums):
+        count = 1
+        j = 0       
+        for i in range(1,len(nums)):
+            if nums[j] == nums[i]:
+                count += 1
+            else:
+                count = 1
+            if count <= 2:
+                j += 1
+                nums[j] = nums[i]
+        return j+1
+                
+Another Idea:
+------------
+
+To use Dictionary to save the count of each element in the array. When the count goes above 2, remove the element from the array.
+
+class Solution(object):
+    def removeDuplicates(self, A):
+        i = 0
+        d = collections.defaultdict(int)
+        while i < len(A):
+            if d[A[i]] == 2:
+                A.pop(i)
+                continue
+            d[A[i]] += 1
+            i += 1
+        return len(A)
+
+

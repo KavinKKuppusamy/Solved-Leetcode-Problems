@@ -1,0 +1,117 @@
+130. Surrounded Regions
+
+
+https://www.youtube.com/watch?v=0ZJViJEdtEc&ab_channel=TECHDOSE
+
+https://leetcode.com/problems/surrounded-regions/discuss/558746/Python-DFS-Easy-solution-with-comments
+
+https://leetcode.com/problems/surrounded-regions/discuss/997133/Python-3-DFS-and-backtracking-with-explanation-(128ms-runtime-O(1)-extra-space)
+
+https://leetcode.com/problems/surrounded-regions/discuss/41630/9-lines-Python-148-ms
+
+https://leetcode.com/problems/surrounded-regions/discuss/41652/Python-easy-to-understand-DFS-and-BFS-solutions
+
+https://leetcode.com/problems/surrounded-regions/discuss/294646/Python-DFS-solution-beats-96-108-ms
+
+Solution:
+============
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        r = len(board)
+        c = len(board[0])
+        if r == 0 or c == 0:
+            return board
+        for i in range(0,r):
+            if board[i][0] == 'O':
+                self.run_dfs(i,0,board,r,c)
+            if board[i][c-1] == 'O':
+                self.run_dfs(i,c-1,board,r,c)
+        
+        for j in range(0,c):
+            if board[0][j] == 'O':
+                self.run_dfs(0,j,board,r,c)
+            if board[r-1][j] == 'O':
+                self.run_dfs(r-1,j,board,r,c)
+
+        for i in range(r):
+            for j in range(c):
+                if board[i][j] == 'O':
+                    board[i][j] = 'X'
+                if board[i][j] == '*':
+                    board[i][j] = 'O'
+ 
+                    
+    def run_dfs(self,i,j,board,r,c):
+        if  i < 0  or j < 0  or i > r-1 or j > c-1 or board[i][j] != 'O' :
+            return
+        
+        board[i][j] = '*'
+        self.run_dfs(i-1,j,board,r,c),
+        self.run_dfs(i+1,j,board,r,c),
+        self.run_dfs(i,j-1,board,r,c),
+        self.run_dfs(i,j+1,board,r,c)
+
+or
+
+class Solution:
+    def solve(self, board: List[List[str]]) -> None:
+        r = len(board)
+        c = len(board[0])
+        if r == 0 or c == 0:
+            return board
+        for i in range(0,r):
+            if board[i][0] == 'O':
+                self.run_dfs(i,0,board,r,c)
+            if board[i][c-1] == 'O':
+                self.run_dfs(i,c-1,board,r,c)
+        
+        for j in range(0,c):
+            if board[0][j] == 'O':
+                self.run_dfs(0,j,board,r,c)
+            if board[r-1][j] == 'O':
+                self.run_dfs(r-1,j,board,r,c)
+
+        for i in range(r):
+            for j in range(c):
+                if board[i][j] == 'O':
+                    board[i][j] = 'X'
+                if board[i][j] == '*':
+                    board[i][j] = 'O'
+ 
+                    
+    def run_dfs(self,i,j,board,r,c):
+        
+        board[i][j] = '*'
+        
+        for x , y in [(i-1,j),(i+1,j),(i,j-1),(i,j+1)]:
+            if x >= 0  and y >= 0  and x <= r-1 and y <= c-1 and board[x][y] == 'O':
+	    #if 0 <= x < r and 0 <= y < c and board[x][y] == 'O':
+                self.run_dfs(x,y,board,r,c)
+
+
+
+
+
+
+
+BFS:
+=====
+
+ def solve(self, board):
+        queue = collections.deque([])
+        for r in range(len(board)):
+            for c in range(len(board[0])):
+                if (r in [0, len(board)-1] or c in [0, len(board[0])-1]) and board[r][c] == "O":
+                    queue.append((r, c))
+        while queue:
+            r, c = queue.popleft()
+            if 0<=r<len(board) and 0<=c<len(board[0]) and board[r][c] == "O":
+                board[r][c] = "."
+                queue.extend([(r-1, c),(r+1, c),(r, c-1),(r, c+1)])
+        
+        for r in range(len(board)):
+            for c in range(len(board[0])):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+                elif board[r][c] == ".":
+                    board[r][c] = "O"

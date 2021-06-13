@@ -1,0 +1,17 @@
+192. Word Frequency
+
+cat words.txt | tr -s ' ' '\n' | sort |uniq -c | sort -r | awk '{ print $2, $1 }'
+
+or
+
+cat words.txt | tr -s ' ' '\n' | sort | uniq --count | sort -r | awk '{print $2 " " $1}'
+
+https://leetcode.com/problems/word-frequency/discuss/849332/One-line-with-pipe-with-explanation
+
+https://leetcode.com/problems/word-frequency/discuss/55462/Solution-using-awk-and-pipes-with-explaination
+
+https://leetcode.com/problems/word-frequency/discuss/535836/FULLY-EXPLAINED%3A-100-faster-%2B-new-edge-case
+
+
+https://leetcode.com/problems/word-frequency/discuss/55443/My-simple-solution-(one-line-with-pipe)
+

@@ -1,0 +1,26 @@
+14. Longest Common Prefix
+
+Idea:
+
+Take the min length of the list of strings.
+Traverse all the strings in the array till min_len
+compare characters, return the common prefix if we found mismatch at mid of the traversal
+If all the strings in the list are exactly the same, return (i+1) or min_len characters of strs
+
+Solution:
+
+class Solution(object):
+    def longestCommonPrefix(self, strs):
+        if len(strs) < 1: 
+            return ""
+        min_len = min([len(s) for s in strs])
+        if min_len == 0:
+            return ""
+        for i in range(min_len):
+            char_check = strs[0][i]
+            for next_str in range(1,len(strs)):
+                if char_check != strs[next_str][i]:
+                    return strs[0][:i]
+        return strs[0][:i+1] ## or it can be strs[0][:min_len]
+                    
+

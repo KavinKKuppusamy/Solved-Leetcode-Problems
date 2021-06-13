@@ -1,0 +1,77 @@
+197. Rising Temperature
+
+
+Idea 1
+----------
+Using Window Function (Lag), get the difference in temperature and date.
+
+Solution1: 
+----------
+WITH Weather_Diff AS(
+
+    SELECT id, 
+    Temperature  - LAG(Temperature) OVER(ORDER BY recordDate) temp_diff ,
+    DATEDIFF(recordDate , LAG(recordDate) OVER (ORDER BY recordDate)) date_diff   
+    FROM Weather)
+
+
+SELECT id
+FROM Weather_Diff
+WHERE temp_diff > 0 and date_diff = 1;
+
+
+
+or
+---
+
+SELECT id FROM
+	(SELECT *, 
+	lag(temperature) over(ORDER BY recorddate) AS previousTemp,
+	lag(recorddate) over (ORDER BY recorddate) AS previousDay
+	FROM weather) AS compare_temp
+WHERE temperature>previousTemp
+AND datediff(recorddate, previousDay)=1;
+
+
+
+---------------------------------------------------------------
+Idea 2
+------
+
+Using Self Join and make the date_diff in on condition
+
+
+SELECT
+    weather.id AS 'Id'
+FROM
+    weather
+        JOIN
+    weather w ON DATEDIFF(weather.recordDate, w.recordDate) = 1
+        AND weather.Temperature > w.Temperature
+or 
+
+
+select w1.Id
+from Weather w1, Weather w2
+where (w1.RecordDate = w2.RecordDate + 1) and (w1.Temperature > w2.Temperature);
+
+or
+
+FROM Weather a,Weather b
+WHERE a.Temperature > b.Temperature
+AND DATEDIFF(a.Recorddate,b.Recorddate) = 1
+
+
+or 
+
+
+SELECT Weather.Id 
+FROM   Weather 
+       JOIN Weather AS w 
+         ON w.RecordDate = SUBDATE(Weather.RecordDate, 1) 
+WHERE  Weather.Temperature > w.Temperature 
+
+
+
+
+

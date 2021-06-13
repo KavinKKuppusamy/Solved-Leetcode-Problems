@@ -1,0 +1,74 @@
+210. Course Schedule II
+
+
+Solution: DFS
+
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        import collections
+        course_graph = collections.defaultdict(list)
+        visited_nodes = {}
+        for course,pre_req in prerequisites:
+            course_graph[course].append(pre_req)
+        for i in range(numCourses):
+            visited_nodes[i] = False
+            
+        final_list = [] 
+        exploring_nodes = [] 
+            
+        def dfs(curr_course):
+            if visited_nodes[curr_course]:
+                return True
+            if curr_course in exploring_nodes:
+                return False
+            exploring_nodes.append(curr_course)
+            print(course_graph[curr_course],curr_course)
+            for adj_course in course_graph[curr_course]:
+                if not dfs(adj_course):
+                    return False       
+            final_list.append(curr_course)
+            exploring_nodes.remove(curr_course)
+            visited_nodes[curr_course] = True   
+            return True
+                
+        for course in range(numCourses):
+            if not visited_nodes[course]:
+                if not dfs(course):
+                    return []
+        return final_list
+
+
+Solution 2: BFS Kahn's Algorithm
+-----------------------------------
+if a node has incoming edges, it has prerequisites
+So instead of course_graph[course].append(pre_req), use course_graph[pre_req].append(course)
+
+
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        import collections
+        course_graph = collections.defaultdict(list)
+        in_degree = {i:0 for i in range(numCourses)}
+        
+        for course,pre_req in prerequisites:
+            course_graph[pre_req].append(course)
+            in_degree[course] = in_degree.get(course,0) + 1
+
+        final_list = []  
+        queue = []
+        for vertex in in_degree:
+            if in_degree[vertex] == 0:
+                queue.append(vertex)
+        while queue:
+            curr_course = queue.pop(0)
+            final_list.append(curr_course)
+            
+            for adj_course in course_graph[curr_course]:
+                in_degree[adj_course] -= 1
+                if in_degree[adj_course] == 0:
+                    queue.append(adj_course)
+        return final_list if len(final_list) == numCourses else []
+
+
+
+

@@ -1,0 +1,75 @@
+138. Copy List with Random Pointer
+
+https://leetcode.com/problems/copy-list-with-random-pointer/discuss/614624/Python-O(n)-by-mirror-node-85%2B-w-Visualization
+
+https://www.youtube.com/watch?v=5Y2EiZST97Y&ab_channel=NeetCode
+
+https://leetcode.com/problems/copy-list-with-random-pointer/discuss/379056/Python-solution-with-comments-O(N)-using-a-dictionary
+
+https://leetcode.com/problems/copy-list-with-random-pointer/discuss/786604/Python-Sentinel-Node%3A-O(n)-time-%2B-O(1)-space
+
+
+
+Solution: Using Dictionary 
+=============================
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, x: int, next: 'Node' = None, random: 'Node' = None):
+        self.val = int(x)
+        self.next = next
+        self.random = random
+"""
+
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        old_to_new = {None : None}
+        curr = head
+        
+        while curr:
+            old_to_new[curr] = Node(curr.val)
+            curr = curr.next
+        
+        curr = head
+        while curr:
+            copy = old_to_new[curr]
+            copy.next = old_to_new[curr.next]
+            copy.random = old_to_new[curr.random]
+            curr = curr.next
+            
+        return old_to_new[head]
+                       
+
+
+Solution: This won't work, because the node values can be duplicated
+====================================================================
+
+class Solution:
+    def copyRandomList(self, head: 'Node') -> 'Node':
+        new_head = trav_node = None
+        ##To store random pointers
+        rp_dict = {}
+        ##To store new node val and its pointers
+        nn_dict = {}
+        prev_node = None
+        while head is not None:
+            new_node = Node(head.val,None,None)
+            nn_dict[head.val] = new_node
+            if new_head is None:
+                new_head = trav_node = new_node
+            else:
+                trav_node.next = new_node
+            trav_node = new_node
+            rp_dict[head.val] = head.random.val if head.random is not None else None
+            head = head.next
+            
+        trav_node = new_head
+        while trav_node is not None:
+            random_point = rp_dict[trav_node.val]
+            trav_node.random = nn_dict[random_point] if random_point is not None else None
+            trav_node = trav_node.next
+        return new_head
+            
+                
+            

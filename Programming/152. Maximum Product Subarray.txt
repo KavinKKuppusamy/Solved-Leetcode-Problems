@@ -1,0 +1,20 @@
+152. Maximum Product Subarray
+
+
+https://leetcode.com/problems/maximum-product-subarray/discuss/691867/Python-Easily-understandable-Solution-using-kadanes-algorithm
+https://leetcode.com/problems/maximum-product-subarray/discuss/48405/O(n)-Time-O(1)-space-solution-within-one-scan
+
+Solution: Maintain both max and min of prev sub_array
+------------------------------------------------------
+
+
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        
+        max_prod = min_prod = global_prod = nums[0]
+        for i in nums[1:]:
+            curr_min = min(i,min_prod*i,max_prod*i)
+            curr_max = max(i,min_prod*i,max_prod*i)
+            global_prod = max(curr_max,global_prod)
+            max_prod,min_prod = curr_max,curr_min
+        return global_prod

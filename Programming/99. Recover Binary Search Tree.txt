@@ -1,0 +1,98 @@
+99. Recover Binary Search Tree
+
+
+https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
+
+https://leetcode.com/problems/recover-binary-search-tree/discuss/671363/On-paper-explanantionWell-commented-easy-understand
+
+https://leetcode.com/problems/recover-binary-search-tree/discuss/32535/No-Fancy-Algorithm-just-Simple-and-Powerful-In-Order-Traversal
+
+
+
+
+
+# Definition for a binary tree node.
+99. Recover Binary Search Tree
+
+
+
+
+
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    
+    
+    def recoverTree(self, root: TreeNode) -> None:
+        
+        self.prev_element = TreeNode(float("-inf"))
+        self.first_element = None
+        self.second_element = None
+    
+        def in_order_traversal(root):
+            if not root:
+                return
+            
+            in_order_traversal(root.left)
+            
+            if not self.first_element and self.prev_element.val >= root.val:
+                self.first_element = self.prev_element
+                
+            if self.first_element and self.prev_element.val >= root.val:
+                self.second_element = root
+                
+            self.prev_element = root
+            in_order_traversal(root.right)
+        
+        in_order_traversal(root)
+        
+        self.first_element.val,self.second_element.val = self.second_element.val,self.first_element.val
+
+
+
+
+Solution2:
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    
+    
+    def recoverTree(self, root: TreeNode) -> None:
+        
+        self.prev_element = None
+        self.first_element = None
+        self.middle_element = None
+        self.last_element = None
+    
+        def in_order_traversal(root):
+            if not root:
+                return
+            
+            in_order_traversal(root.left)
+            
+            if self.prev_element and self.prev_element.val >= root.val:
+                ##Middle Element is for when swap elements are next to each other
+                if not self.first_element:
+                    self.first_element = self.prev_element
+                    self.middle_element = root
+                else:
+                    self.last_element = root
+                
+            self.prev_element = root
+            in_order_traversal(root.right)
+        
+        in_order_traversal(root)
+        
+        if self.last_element:
+            self.first_element.val,self.last_element.val = self.last_element.val,self.first_element.val
+        else:
+            self.first_element.val,self.middle_element.val = self.middle_element.val,self.first_element.val
+        

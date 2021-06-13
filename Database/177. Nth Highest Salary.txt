@@ -1,0 +1,50 @@
+177. Nth Highest Salary
+
+
+Solution:
+-----------
+
+Using Limit and OFFSET
+
+
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+    DECLARE M INTEGER;
+    SET M=N-1;
+  RETURN (
+      SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC Limit M,1
+  );
+END
+
+
+
+or
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+    SET N=N-1;
+  RETURN (
+      SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC Limit N,1
+  );
+END
+
+Solution2:
+----------
+Using Rank
+
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+      # Write your MySQL query statement below.
+      select distinct Salary
+      from 
+      (select DENSE_RANK() over (order by Salary desc) as r, Salary
+        from Employee
+       ) as t
+      where r =N
+  );
+END
+
+

@@ -1,0 +1,57 @@
+Reference: 
+
+https://www.askpython.com/python/examples/trie-data-structure#:~:text=Implementing%20a%20Trie%20Data%20Structure%20in%20Python%20Trie,suggestions%20you%20see%20while%20typing%20on%20a%20keyboard.
+
+
+
+
+class TrieNode:
+    def __init__(self, char):
+        self.char = char
+        self.is_end = False
+        self.children = {}
+        
+
+class Trie(object):
+
+    def __init__(self):
+        self.root = TrieNode('')
+
+    def insert(self, word):
+        curr = self.root
+        for char in word:
+            if char in curr.children:
+                curr = curr.children[char]
+            else:
+                make_node = TrieNode(char)
+                curr.children[char] = make_node
+                curr = make_node
+        curr.is_end = True          
+            
+            
+    def search(self, word):
+        
+        curr = self.root
+        for char in word:
+            if char in curr.children:
+                curr = curr.children[char]
+            else:
+                return False
+        return curr.is_end
+        
+
+    def startsWith(self, prefix):
+        curr = self.root
+        for char in prefix:
+            if char not in curr.children:
+                return False
+            curr = curr.children[char]
+        return True
+        
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)

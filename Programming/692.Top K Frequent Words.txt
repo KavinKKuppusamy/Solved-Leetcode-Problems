@@ -1,0 +1,42 @@
+692. Top K Frequent Words
+
+
+My solution:
+
+Count the frequency of each word, then add it to heap that stores the best k candidates. Here, "best" is defined with our custom ordering relation, which puts the worst candidates at the top of the heap. At the end, we pop off the heap up to k times and reverse the result so that the best candidates are first.
+
+class Solution(object):
+    def topKFrequent(self, words, k):
+        from collections import Counter
+        import heapq
+        w_count = Counter(words)
+
+        # Having negative freq will help to Max Heap
+        # Having freq , word as tuple will sort first based on freq and then again with word alphabetical order if frequencies matches 
+
+        count_word_list = [(-freq,word) for word,freq in w_count.items()]
+        heapq.heapify(count_word_list)
+    
+        return [heapq.heappop(count_word_list)[1] for _ in range(k)]
+        
+Time Complexity:
+
+we improve this to O(N+klogN): our heapq.heapify operation and counting operations are O(N), and each of k heapq.heappop operations are O(logN).
+
+
+Other Solution:
+
+class Solution(object):
+    def topKFrequent(self, words, k):
+        count = collections.Counter(words)
+        candidates = count.keys()
+        candidates.sort(key = lambda w: (-count[w], w))
+        return candidates[:k]
+
+
+Time Complexity:
+
+Time Complexity: O(NlogN)
+
+
+

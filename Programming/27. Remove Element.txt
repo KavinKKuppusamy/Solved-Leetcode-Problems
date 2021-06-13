@@ -1,0 +1,48 @@
+27. Remove Element
+
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        
+        left = 0
+        right = len(nums)-1
+        
+        while left <= right:
+            if nums[right] == val:
+                right -= 1
+                continue
+            if nums[left] == val:
+                nums[left],nums[right] = nums[right],nums[left]
+                left += 1
+                right -= 1
+            else:
+                left += 1
+        return left
+        
+        
+
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        
+        left = 0
+        right = len(nums)-1
+        
+        while left <= right:
+            if nums[left] == val:
+                nums[left],nums[right] = nums[right],nums[left]
+                right -= 1
+            else:
+                left += 1
+        return left
+        
+*******
+class Solution(object):
+    def removeElement(self, nums, val):
+        curr_size = 0  ## curr_size will return length of array after removal
+        
+        for i in range(0, len(nums)):
+            if nums[i] != val:
+                nums[curr_size] = nums[i]
+                curr_size += 1
+                
+        return curr_size
+                        

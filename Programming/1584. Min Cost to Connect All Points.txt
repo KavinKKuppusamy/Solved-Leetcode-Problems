@@ -1,0 +1,107 @@
+1584. Min Cost to Connect All Points
+
+https://bradfieldcs.com/algos/graphs/prims-spanning-tree-algorithm/
+
+https://www.geeksforgeeks.org/kruskals-minimum-spanning-tree-algorithm-greedy-algo-2/
+
+https://www.youtube.com/watch?v=fAuF0EuZVCk&ab_channel=TusharRoy-CodingMadeSimple
+
+https://leetcode.com/problems/min-cost-to-connect-all-points/discuss/845467/Python-AnimationVisualization-with-Video-Explanation-of-Kruskal's-Algorithm
+
+https://leetcode.com/problems/min-cost-to-connect-all-points/discuss/1095489/Python-Minimum-Spanning-Tree-(Prim-and-Kruskal)
+
+
+Solution: Using Prims
+======================
+
+
+import collections
+import heapq
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        
+        graph = collections.defaultdict(list)
+        manhattan_dist = lambda x,y : abs(x[0] - y[0]) + abs(x[1] - y[1])
+        n = len(points)
+        for i in range(n):
+            for j in range(i+1,n):
+                dist =  manhattan_dist(points[i],points[j])
+                graph[i].append([dist,j])
+                graph[j].append([dist,i])
+        min_heap = graph[0]
+        heapq.heapify(min_heap)
+        visited = [False]*n
+        visited[0] = True
+        total_cost = 0
+        count = 1
+        while min_heap and count < n:
+            cost, point = heapq.heappop(min_heap)
+            if not visited[point]:
+                count += 1
+                visited[point] = True
+                total_cost += cost
+                for adj_edge in graph[point]:
+                    if not visited[adj_edge[1]]:
+                        heapq.heappush(min_heap,adj_edge)
+        return total_cost
+
+or:
+
+  def minCostConnectPoints(self, p: List[List[int]]) -> int:
+        
+        def manhattan(x, y):
+            return abs(x[0]-y[0]) + abs(x[1]-y[1])
+        
+        ans, n = 0, len(p)
+        seen = set()
+        vertices = [(0, (0, 0))]
+        
+        while len(seen) < n:
+            # print(vertices, seen)
+            w, (u, v) = heapq.heappop(vertices)            
+            if v in seen: continue
+            ans += w
+            seen.add(v)
+            for j in range(n):
+                if j not in seen and j!=v:
+                    heapq.heappush(vertices, (manhattan(p[j], p[v]), (v, j)))
+
+
+
+
+Solution: Krushkals (Union&Find)
+====================================
+
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+
+        manhattan_dist = lambda x,y : abs(x[0] - y[0]) + abs(x[1] - y[1])
+        n = len(points)
+        edge_weights = []
+        for i in range(n):
+            for j in range(i+1,n):
+                dist =  manhattan_dist(points[i],points[j])
+                edge_weights.append((dist,i,j))
+        edge_weights.sort(key = lambda x: x[0])
+        parent = [i for i in range(n)]
+        
+        def find(v):
+            if parent[v] == v:
+                return v
+            return find(parent[v])
+            
+        def union(u,v):
+            f1 = find(u)
+            f2 = find(v)
+            if f1 != f2:
+                parent[f2] = f1
+                return True
+            return False
+            
+        total_cost = 0
+        for dist,p1,p2 in edge_weights:
+            if union(p1,p2):
+                total_cost += dist
+        return total_cost
+        
+        

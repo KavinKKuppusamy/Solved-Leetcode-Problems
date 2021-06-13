@@ -1,0 +1,28 @@
+627. Swap Salary
+
+Solution1:
+----------
+
+
+UPDATE salary
+SET sex = CASE sex WHEN 'm' THEN 'f'
+                   ELSE 'm'
+          END;
+
+Solution2
+---------
+
+UPDATE salary SET sex = IF (sex = "m", "f", "m");
+
+Solution3:
+-----------
+update salary set sex = char(211-ascii(sex))
+
+or
+
+update salary set sex = char(ASCII('f') + ASCII('m') - ASCII(sex));
+
+Because: 
+
+ascii('f') = 102
+ascii('m') = 109

@@ -1,0 +1,58 @@
+57. Insert Interval
+
+Idea:
+------
+  Add newInterval to list of interval,
+  Sort the new list based on first element
+  Apply the same function like in (56. Merge Intervals)
+Complexity: O(nlogn)
+
+# O(nlgn) time, the same as Merge Intervals 
+# https://leetcode.com/problems/merge-intervals/
+
+def insert1(self, intervals, newInterval):
+    intervals.append(newInterval)
+    res = []
+    for i in sorted(intervals, key=lambda x:x.start):
+        if res and res[-1].end >= i.start:
+            res[-1].end = max(res[-1].end, i.end)
+        else:
+            res.append(i)
+    return res
+
+
+
+How can we do this in O(n)?
+----------------------------
+ 
+Take the first and last value of the newInterval as start and end.
+
+Whenever we overlapping, update the start and end value 
+For example: [[1,3],[6,9]] and newInterval is [2,15]
+For 1,3, start,end = 2,15  --> its overlapping, so start,end = 1,15
+for 6,9, it again overlapping with updated newIntervals, so update accordingly.
+
+
+
+
+Solution:
+----------
+
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        start,end = newInterval
+        ret_list = []
+        
+        for index,interval in enumerate(intervals):
+            if interval[1] < start:
+                ret_list.append(interval)
+            elif end < interval[0]:
+                ret_list.append([start,end])
+                return ret_list + intervals[index:]
+            else:
+                start = min(start,interval[0])
+                end = max(end,interval[1])
+
+        ret_list.append([start,end])
+        return ret_list
+                

@@ -1,0 +1,46 @@
+Count of distinct substrings of a string
+
+Description: Given a String s, a sub-string is defined as a non-empty string that can be obtained by applying following operation
+
+Remove zero or 1 character from left side of s
+Remove zero or 1 character from right side of s
+Remove zero or 1 character from left & right side of s
+Find how many distinct sub-string possible.
+
+
+https://www.geeksforgeeks.org/count-distinct-substrings-string-using-suffix-trie/
+
+https://www.youtube.com/watch?v=m2lZRmMjebw&ab_channel=WilliamFiset
+
+https://www.geeksforgeeks.org/count-distinct-substrings-string-using-suffix-array/
+
+https://leetcode.com/playground/wSAxEw3n
+
+https://leetcode.com/discuss/interview-question/382696/intuit-oa-2019-substring-calculator
+
+
+global count 
+global res
+res = set()
+count = 0
+
+def reduce(string):
+    global count, res
+    if not string:
+        return
+    if string not in res:
+        res.add(string)
+        count+=1
+    else:
+        return
+    
+    reduce(string[:-1])
+    reduce(string[1:])
+    if len(string)>=2:
+        reduce(string[1:-1])
+
+reduce("abbbcde")
+print(count)
+print(res)
+    
+    

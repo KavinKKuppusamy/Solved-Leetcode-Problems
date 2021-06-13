@@ -1,0 +1,27 @@
+811. Subdomain Visit Count
+
+
+
+Idea:
+-----
+Using Hashmap, store fragments of the domains as key and add the counts
+
+
+Solution:
+---------
+
+class Solution(object):
+    def subdomainVisits(self, cpdomains):
+        domain_count_dict = {}       
+        for entry in cpdomains:
+            counts,domain = entry.split()          
+            d_splits = domain.split('.')[::-1]
+            prev= ''
+            for i in range(0,len(d_splits)):
+                d_name = d_splits[i] + prev
+                domain_count_dict[d_name] = domain_count_dict.get(d_name,0) + int(counts)
+                prev= '.' + d_name 
+        ret_list = [str(count) + ' ' + domain for domain,count in domain_count_dict.items()]
+        return ret_list
+            
+                

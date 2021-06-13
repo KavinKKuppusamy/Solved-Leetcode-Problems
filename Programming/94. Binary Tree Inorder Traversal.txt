@@ -1,0 +1,55 @@
+94. Binary Tree Inorder Traversal
+
+
+Recursive Solution
+------------------
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def inorderTraversal(self, root):
+        res = []
+        def dfs_inorder(root,res):
+            if root is None:
+                return
+            
+            dfs_inorder(root.left,res)
+            res.append(root.val)
+            dfs_inorder(root.right,res)
+            
+        dfs_inorder(root,res)
+        return res
+            
+
+
+Iterative Solution:
+-------------------
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def inorderTraversal(self, root):
+        node_stack = []
+        res_values = []
+        
+        while True:
+            if root is not None:
+                node_stack.append(root)
+                root = root.left
+            else:
+                if not node_stack:
+                    return res_values
+                root = node_stack.pop()
+                res_values.append(root.val)
+                root = root.right
+        return res_values
+            
+            

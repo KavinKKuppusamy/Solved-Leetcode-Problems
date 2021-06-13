@@ -1,0 +1,73 @@
+224. Basic Calculator
+
+
+https://leetcode.com/problems/basic-calculator/discuss/62344/Easy-18-lines-C%2B%2B-16-lines-Python
+
+https://leetcode.com/problems/basic-calculator/discuss/62418/Python-with-stack
+
+https://www.youtube.com/watch?v=081AqOuasw0&ab_channel=JessicaLin
+
+https://www.youtube.com/watch?v=nXbYeWCAYoA&ab_channel=CodingInterviewPreparation
+
+Solution:
+
+class Solution:
+    def calculate(self, s: str) -> int:
+        operators = ['+','-','(',')']
+        pre_op = '+'
+        stack = []
+        num = 0
+        curr_sum = 0
+        s = s.strip()
+        for index,char in enumerate(s):
+
+            if char.isdigit():
+                num = num*10 + int(char)
+
+            elif char in ['+','-']:
+                sign = [-1,1][pre_op == '+']
+                curr_sum += sign*num 
+                pre_op = char
+                num = 0
+                
+            elif char == '(':
+                stack.append(curr_sum)
+                sign = [-1,1][pre_op == '+']
+                stack.append(sign)
+                curr_sum = 0
+                pre_op = '+'
+                
+            elif char == ')':
+                sign = [-1,1][pre_op == '+']
+                curr_sum += sign*num
+                stack_sign = stack.pop()
+                stack_sum = stack.pop()
+                curr_sum = stack_sum + stack_sign*curr_sum 
+                num = 0
+        sign = [-1,1][pre_op == '+']
+        return curr_sum + num*sign
+                
+                
+            
+            
+ or
+
+def calculate(self, s):
+    res, num, sign, stack = 0, 0, 1, []
+    for ss in s:
+        if ss.isdigit():
+            num = 10*num + int(ss)
+        elif ss in ["-", "+"]:
+            res += sign*num
+            num = 0
+            sign = [-1, 1][ss=="+"]
+        elif ss == "(":
+            stack.append(res)
+            stack.append(sign)
+            sign, res = 1, 0
+        elif ss == ")":
+            res += sign*num
+            res *= stack.pop()
+            res += stack.pop()
+            num = 0
+    return res + num*sign

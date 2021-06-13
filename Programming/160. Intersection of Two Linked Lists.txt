@@ -1,0 +1,101 @@
+
+
+
+Solution 1: Using Dictionary
+-----------------------------
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        A_dict = {}
+        
+        while headA is not None:
+            A_dict[headA] = 1
+            headA = headA.next
+            
+        while headB is not None:
+            if headB in A_dict:
+                break
+            headB = headB.next
+        
+        return headB
+            
+160. Intersection of Two Linked Lists
+        
+
+Solution2 : Using Two stack
+---------------------------
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def getIntersectionNode(self, headA, headB):
+        stackA, stackB = [], []        
+        while(headA):
+            stackA.append(headA)
+            headA = headA.next
+        
+        while(headB):
+            stackB.append(headB)
+            headB = headB.next
+        temp = None
+        while(stackA and stackB):
+            nodeA = stackA.pop()
+            nodeB = stackB.pop()
+            if nodeA == nodeB: 
+                temp = nodeA
+        return temp
+            
+
+Solution3:
+-------------
+https://www.youtube.com/watch?v=_7byKXAhxyM&ab_channel=VivekanandKhyade-AlgorithmEveryDay
+
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        c1 = headA 
+        c2 = headB
+        len1 = 0
+        len2 = 0
+        # get len of first list
+        while c1:
+            len1 = len1 + 1
+            c1 = c1.next
+        # get len of second list
+        while c2:
+            len2 = len2 + 1
+            c2 = c2.next
+        # if list 1 is bigger then subtract and extend
+        # headA by the difference so they can start at
+        # the same spot
+        if len1 > len2:
+            for i in range(len1-len2):
+                headA = headA.next
+        # else if list 2 is bigger do similar
+        else:
+            for i in range(len2-len1):
+                headB = headB.next
+        # now we advance both heads together
+        # if they intersect we will know and return the node
+        while headA and headB:
+            if headA == headB:
+                return headA
+            headA = headA.next
+            headB = headB.next
+        # if they dont we return None
+        return None
+

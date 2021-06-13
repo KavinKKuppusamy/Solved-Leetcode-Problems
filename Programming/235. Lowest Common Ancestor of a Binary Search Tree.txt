@@ -1,0 +1,67 @@
+235. Lowest Common Ancestor of a Binary Search Tree
+
+https://www.youtube.com/watch?v=TIoCCStdiFo&ab_channel=TusharRoy-CodingMadeSimple
+
+https://www.youtube.com/watch?v=6POfA8fruxI&ab_channel=NickWhite
+
+Idea:
+
+BST tree will have all the values less than root on left and greater values on right.
+
+When we find a node that is bifurcating p and q which means that one of element is on left or other element is on right.
+If p and q are in left, traverse thro left. Same for right as well.
+
+Solution:
+---------
+
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        
+        if p.val < root.val and q.val < root.val:
+            return self.lowestCommonAncestor(root.left,p,q)
+        
+        elif p.val > root.val and q.val > root.val:
+            return self.lowestCommonAncestor(root.right,p,q)
+        
+        else:
+            return root
+
+
+or (same as above)
+
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        
+        if root.val > max(p.val, q.val):
+            return self.lowestCommonAncestor(root.left,p,q)
+        
+        elif root.val < min(p.val, q.val):
+            return self.lowestCommonAncestor(root.right,p,q)
+        
+        else:
+            return root
+        
+
+Approach 2: Iterative Approach
+------------------------------
+Algorithm
+
+The steps taken are also similar to approach 1. The only difference is instead of recursively calling the function, we traverse down the tree iteratively. This is possible without using a stack or recursion since we don't need to backtrace to find the LCA node. In essence of it the problem is iterative, it just wants us to find the split point. The point from where p and q won't be part of the same subtree or when one is the parent of the other.
+        
+
+
+class Solution:
+    def lowestCommonAncestor(self, root, p, q):
+        p_val = p.val
+        q_val = q.val
+        node = root
+        while node:
+            parent_val = node.val
+
+            if p_val > parent_val and q_val > parent_val:    
+                node = node.right
+            elif p_val < parent_val and q_val < parent_val:
+                node = node.left
+            else:
+                # We have found the split point, i.e. the LCA node.
+                return node

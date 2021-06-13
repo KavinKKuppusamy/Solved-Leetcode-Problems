@@ -1,0 +1,34 @@
+595. Big Countries
+
+Solution 1: Using WHERE and OR clauses
+---------------------------------------
+
+SELECT name, population, area
+FROM World
+WHERE area > 3000000 or population > 25000000;
+
+Solution 2 : using Union (But it's tad slow than Solution1)
+------------------------------
+(Remember UNION gives you distinct values, UNION ALL will show duplicate values)
+
+SELECT name, population, area
+FROM World
+WHERE area > 3000000 
+UNION 
+SELECT name, population, area
+FROM World
+WHERE population > 25000000;
+
+Solution 3:  Using Exists
+--------------------------
+SELECT name, population, area
+FROM World
+WHERE EXISTS (
+SELECT *
+WHERE (population > 25000000) OR (area > 3000000)
+)
+
+
+
+
+

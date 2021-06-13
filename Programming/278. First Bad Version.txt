@@ -1,0 +1,27 @@
+278. First Bad Version
+
+
+Naive Approach
+--------------
+Linear Scan (O(n))
+
+Better Approach:
+----------------
+Binary Search
+
+Task is to find the firt occurrence of the Bad outcome.
+
+
+My Solution:
+-----------
+class Solution(object):
+    def firstBadVersion(self, n):
+        l = 1
+        r = n
+        while ( l < r):
+            m = l + (r-l)//2
+            if(isBadVersion(m)):
+                r = m
+            else:
+                l = m +1
+        return l

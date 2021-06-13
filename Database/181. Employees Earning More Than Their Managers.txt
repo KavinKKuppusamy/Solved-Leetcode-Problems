@@ -1,0 +1,28 @@
+181. Employees Earning More Than Their Managers
+
+Idea:
+------
+Just to do Inner Join and compare the salary with employee and manager
+When you do SELF JOIN, make sure you give the correct condition 
+For eg, First I gave emp.Id = mgr.ManagerId instead of the correct one, which was wrong
+
+Solution:
+---------
+
+SELECT emp.Name as Employee
+FROM Employee emp
+INNER JOIN Employee mgr ON emp.ManagerId = mgr.Id
+WHERE emp.salary > mgr.salary;
+
+
+Solution-2:
+-------------
+
+SELECT
+    a.Name AS 'Employee'
+FROM
+    Employee AS a,
+    Employee AS b
+WHERE
+    a.ManagerId = b.Id
+        AND a.Salary > b.Salary;

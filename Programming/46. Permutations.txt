@@ -1,0 +1,43 @@
+46. Permutations
+
+
+https://www.youtube.com/watch?v=DBLUa6ErLKw
+
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        ret_list = []
+        def backtrack(nums,path):
+            if not nums:
+                ret_list.append(path)
+                return
+            for i in range(len(nums)):
+                backtrack(nums[:i] + nums[i+1:] , path + [nums[i]])
+            
+        backtrack(nums,[])
+        return ret_list
+
+
+
+
+
+
+Checked Version:
+================
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        ret_list = []
+        def backtrack(nums,path):
+            print("Current PAth",path)
+            if not nums:
+                ret_list.append(path)
+                print("Added",ret_list)
+                return
+            for i in range(len(nums)):
+                print(f"for current nums {nums} and i {i} and path is {path} next nums {nums[:i] + nums[i+1:]}")
+                backtrack(nums[:i] + nums[i+1:] , path + [nums[i]])
+            
+        backtrack(nums,[])
+        return ret_list
+        

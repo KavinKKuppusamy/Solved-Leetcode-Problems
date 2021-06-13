@@ -1,0 +1,29 @@
+27. Remove Element
+
+Basic Idea:
+---------
+We want to return the array length (arr_len) after the removal of val whereas the first arr_len elements of the nums should the elements which are not val.
+
+Eg: nums = [1,2,4,4,2,5] val = 2
+return arr_len = 4 --->  [1,4,4,5] or [1,4,4,5,2,2] (Doesn't matter if you keep or not the val in  returned nums)
+
+Idea is to use two pointer method 
+
+curr_size = curr_size will return length of array after removal
+i = travers throught array
+
+when nums[i] is not equal to val, you copy nums[i] to nums[curr_size] and increment curr_size.
+
+Solution:
+---------
+
+class Solution(object):
+    def removeElement(self, nums, val):
+        curr_size = 0  ## curr_size will return length of array after removal
+        for i in range(0, len(nums)):
+            if nums[i] != val:
+                nums[curr_size] = nums[i]
+                curr_size += 1
+        return curr_size
+                
+

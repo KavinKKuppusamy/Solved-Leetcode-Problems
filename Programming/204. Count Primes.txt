@@ -1,0 +1,74 @@
+204. Count Primes
+
+Naive Approach:
+--------------
+
+Check for each number that all the numbers below that number is dividing it. 
+Time complexity  = o(n^2)
+
+Better Approach:
+---------------
+
+Sieve of eratosthenes:
+----------------------
+
+-> We start off with a table of n numbers. Let's look at the first number, 2. We know all multiples of 2 must not be primes, so we mark them off as non-primes. Then we look at the next number, 3. Similarly, all multiples of 3 such as 3 × 2 = 6, 3 × 3 = 9, ... must not be primes, so we mark them off as well. Now we look at the next number, 4, which was already marked off.So,leave it.
+
+
+Time complexity : O(n*log(log(n))) 
+
+My solution:
+-----------
+
+class Solution(object):
+    def countPrimes(self, n):
+        if n < 2:
+            return 0
+        primes = [True]*n
+        primes[0] = primes[1] = False
+        
+        for i in range(2,n):
+            if primes[i]:
+                for j in range(i*i,n,i):
+                    primes[j] = False
+                    
+        primes = filter(lambda x:x==True,primes)
+        return sum(primes)
+
+
+
+Optimization:
+
+1) We would have the redundant factors repeated if you run till n.
+For example:
+	
+100 = 2 * 50
+    = 4 * 25
+    = 5 * 20
+    = 10 * 10
+    = 20 * 5
+    = 25 * 4
+    = 50 * 2
+We can stop till 10 * 10, which means we need only  2,4,5,10,20,25,50. The redundancy starts from 10.
+
+So, the condition will change from i from (2,n) to i from (2, sqrt(n))
+
+
+class Solution(object):
+    def countPrimes(self, n):
+        if n < 2:
+            return 0
+        primes = [True]*n
+        primes[0] = primes[1] = False
+        for i in range(2, int(n**0.5)+1 ):
+            if primes[i]:
+                for j in range(i*i,n,i):
+                    primes[j] = False
+                    
+        primes = filter(lambda x:x==True,primes)
+        return sum(primes)
+
+
+
+	
+

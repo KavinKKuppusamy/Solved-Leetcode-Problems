@@ -1,0 +1,79 @@
+
+
+Approach:
+----------
+To use sliding window.
+
+My Solution:
+-----------
+
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        if len(s) == 0:
+            return 0
+        max_len = 0
+        start_point = 0 
+        index_dict = {}
+        for i in range(0,len(s)):
+            if s[i] in index_dict:
+                ## We put this max condition so that we don't move the start_point backward. To debug, try using the input 'abba' and max the below statement as "start_point = index_dict[s[i]] +  1"
+                start_point = max(start_point, index_dict[s[i]] +  1) 
+            index_dict[s[i]] = i
+            max_len = max(max_len, i - start_point + 1)
+        return max_len
+            
+Complexity Analysis
+-------------------
+
+Time complexity : O(2n) = O(n). In the worst case each character will be visited twice by i and j.
+
+Space complexity : O(min(m,n)). Same as the previous approach. We need O(k) space for the sliding window, where k is the size of the Set. The size of the Set is upper bounded by the size of the string n and the size of the charset/alphabet m.
+       
+
+
+Other Solution:1 
+----------------
+
+My Solution:
+
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        if len(s) == 0:
+            return 0
+        max_len = 0
+        start_point = 0 
+        index_dict = {}
+        for i in range(0,len(s)):
+            if s[i] in index_dict and  start <= index_dict[s[i]]:
+                start_point = index_dict[s[i]] +  1
+            index_dict[s[i]] = i
+            max_len = max(max_len, i - start_point + 1)
+        return max_len
+
+Other solution:2
+------------------
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if s is None:
+            return 0        
+        p1 = 0
+        p2 = 0      
+        seen = {}
+        maxLen = 0
+        while p2 < len(s):
+            if seen.get(s[p2]) is None:
+                seen[s[p2]]=1
+                p2 +=1
+                maxLen = max(len(seen),maxLen)  
+                # calculate len and compare with maxLen for each unique sub string 
+            else:
+                seen.pop(s[p1])    # clear the s[p1] from hasmap 
+                p1 += 1                 # slide the window i.e. move on p1 to next char
+        
+        
+        
+        return maxLen
+
+
+
+

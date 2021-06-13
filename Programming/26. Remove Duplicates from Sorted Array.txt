@@ -1,0 +1,19 @@
+26. Remove Duplicates from Sorted Array
+
+Idea:
+Two pointers solution
+Traverse through nums and if nums[i] is not equal to current value , copy the nums[i] to jth next postition, and increment j.
+
+Solution:
+
+class Solution(object):
+    def removeDuplicates(self, nums):
+        j = 0
+        for i in range(1, len(nums)):
+            if nums[j] != nums[i]:
+                j += 1
+                nums[j] = nums[i]
+                
+        return j+1
+                
+

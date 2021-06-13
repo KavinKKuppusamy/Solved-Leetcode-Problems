@@ -1,0 +1,31 @@
+100. Same Tree
+
+Idea:
+----
+Check current positioned node on both the trees
+	if both nodes are None, return True
+	if either one of the node is None and other one is not , return false
+	if values of the both nodes are not equal, return false
+Do recursive call to left of both trees and right of both trees
+
+
+Solution:
+---------
+
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def isSameTree(self, p, q):
+        if p is None and q is None:
+            return True
+        elif p is None or q is None:
+            return False
+        elif p.val != q.val:
+            return False
+        else:
+            return self.isSameTree(p.left,q.left) and self.isSameTree(p.right,q.right)
+

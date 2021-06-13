@@ -1,0 +1,47 @@
+39. Combination Sum
+
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        ret_list = []
+        
+        def backtrack(nums, path, target):
+            print("added path", path)
+            if target == 0:
+                ret_list.append(path)
+                return
+            if target < 0:
+                return
+            for i in range(len(nums)):
+
+                backtrack(nums[i:], path + [nums[i]] , target - nums[i])
+                
+        backtrack(candidates,[],target)
+        return ret_list
+    
+    
+    
+   
+            
+        
+
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        ret_list = []
+        
+        def backtrack(nums, path, target):
+            print("added path", path)
+            if target == 0:
+                ret_list.append(path)
+                return
+            if target < 0:
+                return
+            for i in range(len(nums)):
+                print(f"current i {i} nums {nums[i:]} and next path { path} and next target {target - nums[i]} ")
+                backtrack(nums[i:], path + [nums[i]] , target - nums[i])
+                
+        backtrack(candidates,[],target)
+        return ret_list
+    
+    

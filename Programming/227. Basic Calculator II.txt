@@ -1,0 +1,102 @@
+227. Basic Calculator II
+
+Tricks:
+Add + to end of s.
+make pre_oper as  +.
+
+
+
+Solution:
+--------
+
+class Solution(object):
+    import math
+    def calculate(self, s):
+        
+        operators =['+', '-', '*', '/']
+        calc_stack = []
+        pre_oper = '+'
+        num = ''
+        s += '+'
+        for i in range(0,len(s)):
+            if s[i] not in operators:
+                num += s[i]
+            elif s[i] in operators:
+                if pre_oper == '+':
+                    calc_stack.append(int(num))
+                elif pre_oper == '-':
+                    calc_stack.append(-int(num))
+                elif pre_oper == '*':
+                    operant = calc_stack.pop()
+                    calc_stack.append(operant*int(num))
+                elif pre_oper == '/':
+                    operant = calc_stack.pop()
+                    calc_stack.append(math.trunc(operant/int(num)))
+                num = ''
+                pre_oper = s[i]
+                
+        return sum(calc_stack)
+                    
+
+or
+
+class Solution:
+    def calculate(self, s: str) -> int:
+        stack = []
+        current_num = 0
+        operator = "+"
+        operators = {"+", "-", "*", "/"}
+        nums = set(str(x) for x in range(10))
+        for index, char in enumerate(s):
+            if char in nums:
+                current_num = current_num * 10 + int(char)
+            if char in operators or index == len(s) - 1:
+                if operator == "+":
+                    stack.append(current_num)
+                elif operator == "-":
+                    stack.append(-current_num)
+                elif operator == "*":
+                    stack[-1] = int(stack[-1] * current_num)
+                else:
+                    stack[-1] = int(stack[-1] / current_num)
+                
+                current_num = 0
+                operator = char
+        
+        return sum(stack)
+
+
+
+Solution2-Without Stack:
+-----------------------------
+class Solution(object):
+    import math
+    def calculate(self, s):
+        res = 0
+        operators =['+', '-', '*', '/']
+        last_num = 0
+        pre_oper = '+'
+        curr_num = ''
+        for i in range(0,len(s)):
+            if s[i] not in operators:
+                curr_num += s[i]
+            if s[i] in operators or i == len(s)-1:
+                if pre_oper == '+':
+                    res += int(last_num)
+                    last_num = int(curr_num)
+                elif pre_oper == '-':
+                    res += int(last_num)
+                    last_num = -int(curr_num)
+                elif pre_oper == '*':
+                    operant = last_num
+                    last_num = operant*int(curr_num)
+                elif pre_oper == '/':
+                    operant = last_num
+                    last_num = math.trunc(operant/int(curr_num))
+                curr_num = ''
+                pre_oper = s[i]
+        res += last_num
+                
+        return res
+
+

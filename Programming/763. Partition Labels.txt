@@ -1,0 +1,49 @@
+763. Partition Labels
+
+
+https://leetcode.com/problems/partition-labels/discuss/452831/Python3-sliding-window
+
+https://leetcode.com/problems/partition-labels/discuss/827993/Python-O(n)-by-dictionary-w-Visualization
+
+https://www.youtube.com/watch?v=5NCjHqx2v-k&ab_channel=NickWhite
+
+Solution-2:
+--------------
+
+class Solution:
+    def partitionLabels(self, S: str) -> List[int]:
+        index_dict = defaultdict(list)
+        for i,char in enumerate(S):
+            index_dict[char].append(i)
+        intervals = []
+        for char in index_dict:
+            intervals.append([index_dict[char][0],index_dict[char][-1]])
+        p_intervals = []
+        for inter in intervals:
+            if not p_intervals or p_intervals[-1][1] < inter[0]:
+                p_intervals.append(inter)
+            else:
+                p_intervals[-1][1] = max(inter[1] , p_intervals[-1][1])
+        ret_list = [(inter[1] - inter[0])+1 for inter in p_intervals]
+        return ret_list
+                
+            
+Solution-2: (Sliding Window)
+------------------------------
+
+class Solution:
+    def partitionLabels(self, S: str) -> List[int]:
+        last = {c:i for i,c in enumerate(S)}
+        start = end = 0
+        output = []
+        for i,c in enumerate(S):
+            end = max(end,last[c])
+            if i == end:
+                output.append(end-start+1)
+                start = i + 1
+        return output
+            
+            
+            
+            
+        

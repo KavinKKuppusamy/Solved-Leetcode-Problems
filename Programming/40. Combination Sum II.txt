@@ -1,0 +1,27 @@
+40. Combination Sum II
+
+
+https://leetcode.com/problems/combination-sum-ii/discuss/815837/Backtrackingrecursion-python-solution-with-illustration
+https://leetcode.com/problems/combination-sum-ii/discuss/17020/Python-easy-to-understand-backtracking-solution
+https://leetcode.com/problems/combination-sum-ii/discuss/883077/Very-easy-python-solution-beats-98-%2B-related-problems-to-solve
+
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        ret_list = []
+        def backtrack(nums, path, target):
+            if target == 0:
+                ret_list.append(path)
+                return
+            if target < 0:
+                return
+            for i in range(len(nums)):
+                if nums[i] > target:
+                    continue
+                if i >= 1 and nums[i] == nums[i-1]:
+                    continue
+                backtrack(nums[i+1:], path + [nums[i]] , target - nums[i])
+                
+        backtrack(sorted(candidates),[],target)
+        return ret_list
+        

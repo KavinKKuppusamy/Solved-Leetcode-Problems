@@ -1,0 +1,20 @@
+697. Degree of an Array
+
+
+class Solution:
+    def findShortestSubArray(self, nums: List[int]) -> int:
+        count_dict = defaultdict(list)
+        for i,val in enumerate(nums):
+            count_dict[val].append(i)
+        max_freq = 0
+        sub_arr_len = len(nums)
+
+        for val,index_list in count_dict.items():      
+            curr_arr_len = (index_list[-1] - index_list[0]) + 1
+            
+            if (len(index_list) == max_freq and curr_arr_len < sub_arr_len) or len(index_list) > max_freq :
+                sub_arr_len = curr_arr_len
+                max_freq = len(index_list)                  
+        return sub_arr_len
+                
+        

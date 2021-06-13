@@ -1,0 +1,42 @@
+178. Rank Scores
+
+https://leetcode.com/problems/rank-scores/discuss/53094/Simple-Short-Fast
+https://leetcode.com/problems/rank-scores/discuss/456610/MySQL-Two-Simple-Solutions-and-Explanations-for-Beginners
+
+DENSE_RANK - If there is a tie between two scores, both should have the same ranking. Note that after a tie, the next ranking number should be the next consecutive integer value. In other words, there should be no "holes" between ranks.
+
+
+RANK - There will be gaps over the ties
+
+Solution:
+---------
+
+SELECT score, DENSE_RANK() OVER (ORDER BY score DESC) as 'Rank'
+FROM Scores;
+
+SOlution2:
+-----------
+
+SELECT
+  Score,
+  (SELECT count(distinct Score) FROM Scores WHERE Score >= s.Score) Rank
+FROM Scores s
+ORDER BY Score desc
+or
+
+SELECT
+  Score,
+  (SELECT count(*) FROM (SELECT distinct Score s FROM Scores) tmp WHERE s >= Score) Rank
+FROM Scores
+ORDER BY Score desc
+
+
+
+Solution3:
+------------
+
+select m2.Score,
+count(distinct m1.Score)+1 as Rank
+from Scores m1, Scores m2
+where m1.Score > m2.Score
+order by Rank;

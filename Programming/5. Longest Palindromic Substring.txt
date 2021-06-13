@@ -1,0 +1,34 @@
+5. Longest Palindromic Substring
+
+
+
+https://leetcode.com/problems/longest-palindromic-substring/discuss/2954/Python-easy-to-understand-solution-with-comments-(from-middle-to-two-ends).
+https://leetcode.com/problems/longest-palindromic-substring/discuss/468326/Clean-Python-3-Solution-(Faster-than-85-and-Memory-Usage-Less-Than-100)
+https://leetcode.com/problems/longest-palindromic-substring/discuss/759291/Straight-Forward-Short-and-Clean-Python-DP-with-Detailed-Simple-Explanation!
+
+https://leetcode.com/problems/longest-palindromic-substring/discuss/578435/Evolution-from-Recursion-to-Top-Down-DP-to-Bottoms-Up-DP.-Easy-understanding-code
+
+Solution :  Expansion around Center
+===================================
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        
+        def helper(left,right):
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+                
+            return s[left+1:right]
+        
+        p = ''
+        for i in range(len(s)):
+            p1 = helper(i,i) #for Odd Cases
+            p2 = helper(i,i+1) #for Even Cases
+            p = max(p,p1,p2,key = lambda x: len(x))
+        return p
+            
+            
+        
+        
+

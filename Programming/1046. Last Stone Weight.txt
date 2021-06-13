@@ -1,0 +1,71 @@
+1046. Last Stone Weight
+
+Idea: using Min-Heap
+-----
+
+Everytime you have to pop out two max elements from the list -- > this gives us the idea that we can use max heap
+
+In python, we don't have max heap. So we just make all the values of the list into negative values and make it as min heap.
+
+We have beta version of max heap:
+
+import heapq
+listForTree = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]    
+heapq.heapify(listForTree)             # for a min heap
+heapq._heapify_max(listForTree)        # for a maxheap!!
+If you then want to pop elements, use:
+
+heapq.heappop(minheap)      # pop from minheap
+heapq._heappop_max(maxheap) # pop from maxheap
+
+Solution:
+---------
+
+
+class Solution(object):
+    def lastStoneWeight(self, stones):
+        import heapq
+        stones = [-each_stone for each_stone in stones]
+        heapify(stones)
+        while len(stones) > 1:
+            stone1, stone2 = heappop(stones), heappop(stones)
+            if stone1 != stone2:
+                heappush(stones, -1 * abs(stone1-stone2))
+        
+        if not stones:
+            return 0
+        return -1 * heappop(stones)
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+

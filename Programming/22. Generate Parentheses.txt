@@ -1,0 +1,26 @@
+22. Generate Parentheses
+
+https://www.youtube.com/watch?v=qBbZ3tS0McI
+https://leetcode.com/problems/generate-parentheses/discuss/10283/Python-simple-stack-solution-without-recursion
+
+
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        ret_list = []
+        
+        
+        
+        def backtrack(curr_string ,open ,close):
+            if len(curr_string) == n*2:
+                ret_list.append(curr_string)
+                
+            if open < n:
+                backtrack(curr_string + '(' ,open+1, close)
+            
+            if close < open:
+                backtrack(curr_string + ')' ,open, close+1)
+                
+        backtrack('',0,0)
+        return ret_list
+        

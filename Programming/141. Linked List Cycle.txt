@@ -1,0 +1,46 @@
+141. Linked List Cycle
+
+Using: Floyd’s Cycle Detection Algorithm or Tortoise and the Hare Algorithm
+---------------------------------------------------------------------------
+
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        slow = fast = head
+        while fast and fast.next != None:
+            slow = slow.next
+            fast = fast.next.next
+            if fast is slow:
+                return True
+        return False
+
+Using Hash or set:
+-------------------
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """        
+        seen = set()
+        
+        while head:
+            if (head in seen):
+                return True
+ 
+            seen.add(head)
+            head = head.next
+ 
+        return False
+
+
